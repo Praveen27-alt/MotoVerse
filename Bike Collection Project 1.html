@@ -1,0 +1,1624 @@
+bash
+
+cat > /mnt/user-data/outputs/bike-collection.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MotoVerse — Premium Motorcycle Collection. Browse 20+ bikes from Yamaha, KTM, Ducati, BMW, and more. Compare specs, save favorites, and find your perfect ride.">
+<title>MotoVerse — Premium Motorcycle Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS & RESET
+═══════════════════════════════════════════════ */
+
+:root {
+  --bg: #0a0b0d;
+  --bg2: #12141c;
+  --bg3: #1f1f1f;
+  --bg4: #22252c;
+  --border: #222530;
+  --text: #f0f2f5;
+  --text2: #9aa0b0;
+  --text3: #5a6070;
+  --accent: #b81d24;
+  --accent2: #e52b36;
+  --accentbg: rgba(184,29,36,0.1);
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --trans: 0.22s ease;
+}
+[data-theme="light"] {
+  --bg: #f4f6fa;
+  --bg2: #ffffff;
+  --bg3: #eef0f5;
+  --bg4: #e2e6ef;
+  --border: #d0d5e0;
+  --text: #0f1117;
+  --text2: #4a5068;
+  --text3: #8a90a0;
+  --shadow: 0 4px 24px rgba(0,0,0,0.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background var(--trans),color var(--trans)}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+input,select,textarea{font-family:inherit;outline:none}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(11,12,14,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;
+  transition:border-color var(--trans),background var(--trans);
+}
+[data-theme="light"] #navbar{background:rgba(244,246,250,0.9)}
+#navbar.scrolled{border-color:var(--border)}
+.nav-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.6rem;font-weight:900;letter-spacing:0.04em;
+  color:var(--text);
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-links a{
+  font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--text2);padding:8px 14px;border-radius:var(--radius-sm);
+  transition:color var(--trans),background var(--trans);
+}
+.nav-links a:hover{color:var(--text);background:var(--bg3)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.nav-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:var(--radius-sm);
+  font-size:0.82rem;font-weight:600;letter-spacing:0.04em;
+  transition:all var(--trans);
+}
+.nav-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.nav-btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn-primary{background:var(--accent);color:#fff}
+.nav-btn-primary:hover{background:var(--accent2)}
+.theme-toggle{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--text2);
+  transition:all var(--trans);
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.hamburger{display:none;flex-direction:column;gap:5px;width:36px;height:36px;
+  align-items:center;justify-content:center;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);
+}
+.hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:all var(--trans)}
+.mobile-menu{
+  display:none;position:fixed;top:64px;left:0;right:0;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;flex-direction:column;gap:4px;z-index:999;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{padding:12px 16px;border-radius:var(--radius-sm);font-weight:500;color:var(--text2)}
+.mobile-menu a:hover{background:var(--bg3);color:var(--text)}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(11,12,14,0.95) 0%,rgba(11,12,14,0.7) 50%,rgba(11,12,14,0.92) 100%),
+    url('kawasaki ninja wallpaper pc.jpg') center/cover no-repeat;
+  padding-top:64px;
+}
+.hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");pointer-events:none}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,77,0,0.15) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+.hero-content{position:relative;z-index:2;padding:80px 48px;max-width:1400px;margin:0 auto;width:100%}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:100px;
+  background:var(--accentbg);border:1px solid rgba(255,77,0,0.3);
+  font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:28px;
+}
+.hero-badge::before{content:'●';font-size:0.5rem;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(3.5rem,9vw,8rem);font-weight:900;
+  line-height:0.92;letter-spacing:-0.01em;
+  margin-bottom:28px;
+}
+.hero-title .line2{color:var(--accent);display:block}
+.hero-title .line3{
+  -webkit-text-stroke:1px rgba(240,242,245,0.3);
+  color:transparent;display:block;
+}
+.hero-sub{
+  font-size:1.1rem;color:var(--text2);max-width:560px;
+  line-height:1.7;margin-bottom:48px;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:64px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:var(--radius-sm);
+  font-weight:600;font-size:0.9rem;letter-spacing:0.02em;
+  transition:all var(--trans);
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,77,0,0.35)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--text2);color:var(--text);transform:translateY(-2px)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:32px}
+.hero-stat{}
+.hero-stat-num{
+  font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;
+  color:var(--text);line-height:1;
+}
+.hero-stat-num span{color:var(--accent)}
+.hero-stat-label{font-size:0.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px}
+
+/* ═══════════════════════════════════════════════
+   SEARCH BAR
+═══════════════════════════════════════════════ */
+.search-bar-wrapper{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:24px 48px;position:sticky;top:64px;z-index:900;
+  box-shadow:var(--shadow);
+}
+.search-bar-inner{max-width:1400px;margin:0 auto;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.search-input-wrap{flex:1;min-width:220px;position:relative}
+.search-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.search-input{
+  width:100%;padding:11px 14px 11px 42px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--text);font-size:0.88rem;
+  transition:border-color var(--trans);
+}
+.search-input:focus{border-color:var(--accent)}
+.search-select{
+  padding:11px 14px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;
+  min-width:150px;cursor:pointer;transition:border-color var(--trans);
+}
+.search-select:focus{border-color:var(--accent)}
+.search-btn{
+  padding:11px 24px;background:var(--accent);color:#fff;
+  border-radius:var(--radius-sm);font-weight:600;font-size:0.88rem;
+  transition:all var(--trans);white-space:nowrap;
+}
+.search-btn:hover{background:var(--accent2)}
+.search-clear{
+  padding:11px 16px;background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);border-radius:var(--radius-sm);font-size:0.82rem;
+  transition:all var(--trans);
+}
+.search-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════ */
+.section{padding:80px 48px}
+.section-inner{max-width:1400px;margin:0 auto}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;gap:16px;flex-wrap:wrap}
+.section-label{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;
+}
+.section-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:800;line-height:1.05;
+}
+.section-title em{font-style:normal;color:var(--accent)}
+.section-sub{color:var(--text2);font-size:0.9rem;margin-top:8px;max-width:500px}
+.view-all{
+  font-size:0.82rem;font-weight:600;color:var(--accent);
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+  padding:8px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,77,0,0.3);
+  transition:all var(--trans);
+}
+.view-all:hover{background:var(--accentbg)}
+
+/* ═══════════════════════════════════════════════
+   BIKE CARDS
+═══════════════════════════════════════════════ */
+.bikes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:24px;
+}
+.bike-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all var(--trans);position:relative;
+  display:flex;flex-direction:column;
+}
+.bike-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 16px 48px rgba(255,77,0,0.15)}
+.bike-card-img{
+  height:200px;overflow:hidden;position:relative;background:var(--bg3);
+}
+.bike-card-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.bike-card:hover .bike-card-img img{transform:scale(1.06)}
+.bike-card-badge{
+  position:absolute;top:12px;left:12px;
+  padding:4px 10px;border-radius:100px;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+}
+.badge-new{background:#22c55e20;color:#22c55e;border:1px solid #22c55e40}
+.badge-featured{background:rgba(255,77,0,0.15);color:var(--accent);border:1px solid rgba(255,77,0,0.3)}
+.badge-top{background:#f59e0b20;color:#f59e0b;border:1px solid #f59e0b40}
+.wishlist-btn{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(11,12,14,0.7);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;transition:all var(--trans);color:var(--text2);
+}
+.wishlist-btn:hover,.wishlist-btn.active{color:var(--red);border-color:var(--red);background:rgba(239,68,68,0.15)}
+.bike-card-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.bike-brand{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.bike-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:4px}
+.bike-category{font-size:0.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
+.bike-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.spec-item{background:var(--bg3);border-radius:var(--radius-sm);padding:10px 12px}
+.spec-label{font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+.spec-value{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:500;color:var(--text)}
+.bike-price{
+  font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;
+  color:var(--text);margin-bottom:16px;
+}
+.bike-price span{font-size:1rem;color:var(--text3);font-weight:400;font-family:'Inter',sans-serif}
+.bike-actions{display:flex;gap:8px;margin-top:auto}
+.bike-btn{
+  flex:1;padding:10px 8px;border-radius:var(--radius-sm);
+  font-size:0.78rem;font-weight:600;letter-spacing:0.02em;
+  transition:all var(--trans);display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.bike-btn-primary{background:var(--accent);color:#fff}
+.bike-btn-primary:hover{background:var(--accent2)}
+.bike-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.bike-btn-outline:hover{border-color:var(--text);color:var(--text)}
+.compare-checkbox{
+  display:flex;align-items:center;gap:6px;
+  margin-top:10px;padding:8px 12px;
+  background:var(--bg3);border-radius:var(--radius-sm);
+  font-size:0.75rem;color:var(--text2);cursor:pointer;
+  border:1px solid var(--border);transition:all var(--trans);
+}
+.compare-checkbox input{accent-color:var(--accent)}
+.compare-checkbox:hover{border-color:var(--accent)}
+
+/* ═══════════════════════════════════════════════
+   BRANDS SECTION
+═══════════════════════════════════════════════ */
+.brands-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:16px}
+.brand-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  cursor:pointer;transition:all var(--trans);
+}
+.brand-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,77,0,0.1)}
+.brand-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;font-family:'Barlow Condensed',sans-serif}
+.brand-name{font-size:0.78rem;font-weight:600;color:var(--text2);text-align:center}
+.brand-count{font-size:0.68rem;color:var(--text3)}
+
+/* ═══════════════════════════════════════════════
+   COMPARE BAR
+═══════════════════════════════════════════════ */
+.compare-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:990;
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:16px 48px;
+  display:none;align-items:center;gap:16px;
+  box-shadow:0 -4px 24px rgba(0,0,0,0.4);
+}
+.compare-bar.show{display:flex}
+.compare-slots{display:flex;gap:12px;flex:1}
+.compare-slot{
+  width:160px;height:52px;border-radius:var(--radius-sm);
+  border:2px dashed var(--border);display:flex;align-items:center;
+  justify-content:center;font-size:0.78rem;color:var(--text3);
+  flex-shrink:0;position:relative;overflow:hidden;
+  background:var(--bg3);
+}
+.compare-slot.filled{border-style:solid;border-color:var(--accent)}
+.compare-slot-name{font-size:0.78rem;font-weight:600;color:var(--text);padding:8px}
+.compare-slot-remove{
+  position:absolute;top:4px;right:4px;
+  width:20px;height:20px;border-radius:50%;background:var(--red);
+  color:#fff;font-size:0.65rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.compare-count{
+  font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;
+  color:var(--text2);
+}
+.compare-btn-go{
+  padding:12px 24px;background:var(--accent);color:#fff;
+  border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;
+  transition:all var(--trans);
+}
+.compare-btn-go:hover{background:var(--accent2)}
+.compare-btn-clear{
+  padding:12px 16px;background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);border-radius:var(--radius-sm);font-size:0.82rem;
+  transition:all var(--trans);
+}
+.compare-btn-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* ═══════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  max-width:960px;width:100%;max-height:90vh;overflow-y:auto;
+  position:relative;
+}
+.modal-close{
+  position:sticky;top:16px;float:right;margin:16px 16px 0 0;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--trans);z-index:10;
+}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-header{padding:32px 32px 0}
+.modal-img{
+  width:100%;height:340px;object-fit:cover;border-radius:var(--radius);
+  margin-bottom:24px;
+}
+.modal-brand{font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;margin-bottom:8px}
+.modal-cat{font-size:0.8rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:20px}
+.modal-price{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:800;color:var(--accent);margin-bottom:24px}
+.modal-body{padding:0 32px 32px}
+.modal-tabs{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:0}
+.modal-tab{
+  padding:10px 20px;font-size:0.82rem;font-weight:600;
+  color:var(--text2);border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+  cursor:pointer;transition:all var(--trans);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.specs-full-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.spec-full-item{background:var(--bg3);border-radius:var(--radius-sm);padding:14px 16px;border:1px solid var(--border)}
+.spec-full-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:6px}
+.spec-full-value{font-family:'JetBrains Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--text)}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.pros-cons-box{background:var(--bg3);border-radius:var(--radius);padding:20px;border:1px solid var(--border)}
+.pros-cons-title{font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:0.9rem}
+.pros-cons-title.pro{color:var(--green)}
+.pros-cons-title.con{color:var(--red)}
+.pros-cons-list li{display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:var(--text2);margin-bottom:10px}
+.modal-footer{display:flex;gap:12px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--border);margin-top:20px}
+
+/* ═══════════════════════════════════════════════
+   COMPARE VIEW
+═══════════════════════════════════════════════ */
+.compare-view{display:none}
+.compare-view.open{display:block}
+.compare-table-wrapper{overflow-x:auto}
+.compare-table{width:100%;border-collapse:collapse}
+.compare-table th,.compare-table td{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  text-align:left;font-size:0.85rem;vertical-align:top;
+}
+.compare-table th{
+  background:var(--bg3);font-weight:700;
+  font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);
+  position:sticky;left:0;z-index:2;
+}
+.compare-table td:first-child{font-weight:600;color:var(--text2);position:sticky;left:0;background:var(--bg2);z-index:1}
+.compare-table tr:hover td{background:var(--bg3)}
+.compare-table .bike-col-head{text-align:center}
+.compare-table .bike-col-head img{width:140px;height:90px;object-fit:cover;border-radius:var(--radius-sm);margin:0 auto 8px}
+.compare-table .val-win{color:var(--green);font-weight:700}
+
+/* ═══════════════════════════════════════════════
+   CONTACT & NEWSLETTER
+═══════════════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact-form{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:36px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
+.form-input,.form-textarea,.form-select2{
+  padding:12px 16px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;
+  transition:border-color var(--trans);
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{resize:vertical;min-height:120px}
+.newsletter-box{background:linear-gradient(135deg,rgba(255,77,0,0.1),rgba(255,77,0,0.05));border:1px solid rgba(255,77,0,0.2);border-radius:var(--radius);padding:40px;text-align:center}
+.newsletter-box h3{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;margin-bottom:12px}
+.newsletter-box p{color:var(--text2);font-size:0.9rem;margin-bottom:24px;line-height:1.6}
+.newsletter-form{display:flex;gap:10px}
+.newsletter-input{
+  flex:1;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;
+}
+.newsletter-input:focus{border-color:var(--accent);outline:none}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:60px 48px 32px;
+}
+.footer-inner{max-width:1400px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand p{font-size:0.85rem;color:var(--text2);line-height:1.7;margin:16px 0 24px}
+.footer-socials{display:flex;gap:10px}
+.social-btn{
+  width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--text2);
+  transition:all var(--trans);
+}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.footer-col h4{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text);margin-bottom:20px}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:0.85rem;color:var(--text2);transition:color var(--trans)}
+.footer-col ul li a:hover{color:var(--accent)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-copy{font-size:0.78rem;color:var(--text3)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:0.78rem;color:var(--text3);transition:color var(--trans)}
+.footer-links a:hover{color:var(--accent)}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+.toast-container{position:fixed;bottom:80px;right:24px;z-index:3000;display:flex;flex-direction:column;gap:8px}
+.toast{
+  padding:12px 20px;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:600;
+  display:flex;align-items:center;gap:8px;box-shadow:var(--shadow);
+  animation:slideIn 0.3s ease;min-width:220px;
+  border:1px solid var(--border);background:var(--bg2);color:var(--text);
+}
+.toast-success{border-color:var(--green);background:rgba(34,197,94,0.1)}
+.toast-info{border-color:var(--blue);background:rgba(59,130,246,0.1)}
+.toast-warning{border-color:var(--yellow);background:rgba(245,158,11,0.1)}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ═══════════════════════════════════════════════
+   SKELETON / EMPTY
+═══════════════════════════════════════════════ */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:80px 24px;
+  color:var(--text2);
+}
+.empty-state p{font-size:1.1rem;margin-bottom:16px}
+.empty-state span{font-size:3rem;display:block;margin-bottom:16px}
+
+/* ═══════════════════════════════════════════════
+   RESULT COUNT
+═══════════════════════════════════════════════ */
+.results-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:24px;flex-wrap:wrap;gap:12px;
+}
+.results-count{font-size:0.85rem;color:var(--text2)}
+.results-count strong{color:var(--text)}
+.sort-select{
+  padding:8px 14px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;cursor:pointer;
+}
+
+/* ═══════════════════════════════════════════════
+   FEATURED MARQUEE
+═══════════════════════════════════════════════ */
+.marquee-section{background:var(--accent);padding:12px 0;overflow:hidden}
+.marquee-track{display:flex;animation:marquee 20s linear infinite;width:max-content}
+.marquee-item{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;color:#fff;
+  padding:0 32px;white-space:nowrap;display:flex;align-items:center;gap:12px;
+}
+.marquee-item::after{content:'◆';font-size:0.5rem;opacity:0.6}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  #navbar{padding:0 24px}
+  .hero-content,.section,.search-bar-wrapper{padding-left:24px;padding-right:24px}
+  .hero-stats{gap:24px}
+  .compare-bar{padding:12px 24px}
+  .compare-slots{display:none}
+  .pros-cons{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:40px 24px 24px}
+  .footer-grid{grid-template-columns:1fr}
+  .modal-header,.modal-body{padding-left:20px;padding-right:20px}
+  .modal-img{height:220px}
+  .newsletter-form{flex-direction:column}
+}
+@media(max-width:480px){
+  .bikes-grid{grid-template-columns:1fr}
+  .brands-grid{grid-template-columns:repeat(3,1fr)}
+  .hero-actions{flex-direction:column;align-items:flex-start}
+  .search-bar-inner{flex-direction:column}
+  .search-input-wrap,.search-select{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Moto<span>Verse</span></a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#brands">Brands</a></li>
+    <li><a href="#compare-section">Compare</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-btn nav-btn-outline" onclick="openWishlist()">
+      ♡ Wishlist <span id="wishlist-count" style="color:var(--accent)"></span>
+    </button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+    <button class="hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#home" onclick="toggleMenu()">Home</a>
+  <a href="#collections" onclick="toggleMenu()">Collections</a>
+  <a href="#brands" onclick="toggleMenu()">Brands</a>
+  <a href="#compare-section" onclick="toggleMenu()">Compare</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-section" style="margin-top:64px">
+  <div class="marquee-track" id="marquee-track"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-noise"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🏍 MotoVerse 2025 Edition</div>
+    <h1 class="hero-title">
+      Find Your<span class="line2">Perfect</span><span class="line3">Machine</span>
+    </h1>
+    <p class="hero-sub">Explore the world's finest motorcycles. Compare specs, discover performance data, and find the bike that was built for you.</p>
+    <div class="hero-actions">
+      <a href="#collections" class="btn btn-primary">Browse Collection →</a>
+      <a href="#compare-section" class="btn btn-ghost">⚡ Compare Bikes</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">20<span>+</span></div>
+        <div class="hero-stat-label">Motorcycles</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">10<span>+</span></div>
+        <div class="hero-stat-label">Brands</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5<span>★</span></div>
+        <div class="hero-stat-label">Categories</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH BAR -->
+<div class="search-bar-wrapper" id="search-bar">
+  <div class="search-bar-inner">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="search-input" placeholder="Search motorcycles..." oninput="applyFilters()">
+    </div>
+    <select class="search-select" id="filter-brand" onchange="applyFilters()">
+      <option value="">All Brands</option>
+    </select>
+    <select class="search-select" id="filter-cat" onchange="applyFilters()">
+      <option value="">All Categories</option>
+      <option value="sports">Sports</option>
+      <option value="cruiser">Cruiser</option>
+      <option value="naked">Naked</option>
+      <option value="adventure">Adventure</option>
+      <option value="touring">Touring</option>
+    </select>
+    <select class="search-select" id="filter-price" onchange="applyFilters()">
+      <option value="">Any Price</option>
+      <option value="0-300000">Under ₹3L</option>
+      <option value="300000-600000">₹3L – ₹6L</option>
+      <option value="600000-1500000">₹6L – ₹15L</option>
+      <option value="1500000-99999999">₹15L+</option>
+    </select>
+    <select class="search-select" id="filter-cc" onchange="applyFilters()">
+      <option value="">Any Engine</option>
+      <option value="0-250">≤250cc</option>
+      <option value="250-500">251–500cc</option>
+      <option value="500-1000">501–1000cc</option>
+      <option value="1000-9999">1000cc+</option>
+    </select>
+    <button class="search-clear" onclick="clearFilters()">✕ Clear</button>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section class="section" id="featured" style="background:var(--bg)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">🔥 Editor's Pick</div>
+        <h2 class="section-title">Featured <em>Bikes</em></h2>
+        <p class="section-sub">Hand-picked machines that define the pinnacle of motorcycling.</p>
+      </div>
+    </div>
+    <div class="bikes-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="section" id="brands" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">🏭 Manufacturers</div>
+        <h2 class="section-title">Popular <em>Brands</em></h2>
+      </div>
+    </div>
+    <div class="brands-grid" id="brands-grid"></div>
+  </div>
+</section>
+
+<!-- LATEST LAUNCHES -->
+<section class="section" id="latest" style="background:var(--bg)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">🚀 Just Arrived</div>
+        <h2 class="section-title">Latest <em>Launches</em></h2>
+      </div>
+    </div>
+    <div class="bikes-grid" id="latest-grid"></div>
+  </div>
+</section>
+
+<!-- ALL COLLECTION -->
+<section class="section" id="collections" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">🏍 Full Lineup</div>
+        <h2 class="section-title">All <em>Collections</em></h2>
+      </div>
+    </div>
+    <div class="results-bar">
+      <div class="results-count" id="results-count">Showing <strong>0</strong> motorcycles</div>
+      <select class="sort-select" id="sort-select" onchange="applyFilters()">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="cc-desc">Engine: Largest First</option>
+        <option value="speed-desc">Top Speed: Fastest First</option>
+      </select>
+    </div>
+    <div class="bikes-grid" id="all-grid"></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="section" id="compare-section" style="background:var(--bg)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">⚡ Side by Side</div>
+        <h2 class="section-title">Compare <em>Bikes</em></h2>
+        <p class="section-sub">Select bikes using the checkbox on any card to compare specs side by side.</p>
+      </div>
+    </div>
+    <div class="compare-view" id="compare-view">
+      <div class="compare-table-wrapper">
+        <table class="compare-table" id="compare-table"></table>
+      </div>
+    </div>
+    <div id="compare-empty" style="text-align:center;padding:48px;color:var(--text2)">
+      <div style="font-size:3rem;margin-bottom:16px">⚡</div>
+      <p>Select 2 or more bikes using the checkboxes on any bike card to compare them here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">📬 Get in Touch</div>
+        <h2 class="section-title">Contact <em>Us</em></h2>
+      </div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-input" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" placeholder="Bike inquiry...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about the bike you're interested in..."></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showToast('Message sent! We\'ll reply within 24 hours.','success')">Send Message →</button>
+      </div>
+      <div>
+        <div class="newsletter-box" style="margin-bottom:24px">
+          <h3>Stay in the Loop</h3>
+          <p>Get the latest bike launches, reviews, and exclusive deals delivered to your inbox.</p>
+          <div class="newsletter-form">
+            <input class="newsletter-input" placeholder="your@email.com">
+            <button class="btn btn-primary" onclick="showToast('Subscribed! 🏍 Welcome aboard.','success')">Subscribe</button>
+          </div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
+          <h4 style="margin-bottom:16px;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em">Follow Us</h4>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#" class="social-btn" title="Instagram">📸</a>
+            <a href="#" class="social-btn" title="Twitter">🐦</a>
+            <a href="#" class="social-btn" title="YouTube">▶️</a>
+            <a href="#" class="social-btn" title="Facebook">📘</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">Moto<span>Verse</span></div>
+        <p>Your ultimate destination for motorcycle research. Compare specs, discover brands, and find your perfect ride — all in one place.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">📸</a>
+          <a href="#" class="social-btn">🐦</a>
+          <a href="#" class="social-btn">▶️</a>
+          <a href="#" class="social-btn">📘</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#collections">All Bikes</a></li>
+          <li><a href="#brands">Brands</a></li>
+          <li><a href="#featured">Featured</a></li>
+          <li><a href="#latest">Latest Launches</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="#" onclick="filterByCategory('sports')">Sports</a></li>
+          <li><a href="#" onclick="filterByCategory('cruiser')">Cruiser</a></li>
+          <li><a href="#" onclick="filterByCategory('naked')">Naked</a></li>
+          <li><a href="#" onclick="filterByCategory('adventure')">Adventure</a></li>
+          <li><a href="#" onclick="filterByCategory('touring')">Touring</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 MotoVerse. For informational purposes. All brand trademarks belong to their respective owners.</p>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- COMPARE BAR -->
+<div class="compare-bar" id="compare-bar">
+  <div class="compare-slots" id="compare-slots"></div>
+  <span class="compare-count" id="compare-count-label">0 selected</span>
+  <button class="compare-btn-go" onclick="scrollToCompare()">Compare Now ⚡</button>
+  <button class="compare-btn-clear" onclick="clearCompare()">✕ Clear</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════
+const BIKES = [
+  {
+    id:1, brand:"Yamaha", name:"R1M", category:"sports", cc:998, power:"200 bhp", topSpeed:"299 km/h",
+    mileage:"14 kmpl", tank:"17L", price:2399000,
+    badge:"featured", year:2024, isNew:false, isFeatured:true, isTopRated:true,
+    img:"bikes/r1m.jpg",
+    officialUrl:"https://www.yamaha-motor.co.in/motorcycles/sports/yzf-r1m.html",
+    desc:"The pinnacle of Yamaha's supersport engineering, born on the MotoGP circuit.",
+    specs:{engine:"998cc Inline-4",power:"200 bhp @ 13,500 rpm",torque:"113 Nm @ 11,500 rpm",gearbox:"6-speed",weight:"199 kg",seat:"820 mm",fuel:"Petrol",abs:"Cornering ABS"},
+    pros:["MotoGP-derived electronics","Carbon fibre bodywork","Öhlins Electronic Suspension","Track-focused geometry"],
+    cons:["Extremely expensive","Not comfortable for long rides","Steep learning curve","Requires frequent servicing"]
+  },
+  {
+    id:2, brand:"KTM", name:"Duke 390", category:"naked", cc:373, power:"44 bhp", topSpeed:"167 km/h",
+    mileage:"28 kmpl", tank:"13.4L", price:310000,
+    badge:"top", year:2024, isNew:false, isFeatured:false, isTopRated:true,
+    img:"bikes/duke390.jpg",
+    officialUrl:"https://www.ktmindia.com/motorcycles/street/duke-390",
+    desc:"The quintessential beginner-to-expert naked bike that redefined the 400cc segment.",
+    specs:{engine:"373cc Single",power:"44 bhp @ 9,000 rpm",torque:"37 Nm @ 7,000 rpm",gearbox:"6-speed",weight:"163 kg",seat:"830 mm",fuel:"Petrol",abs:"Dual-channel ABS"},
+    pros:["Agile city handling","TFT display with connectivity","Strong performance-to-price","Supermoto DNA"],
+    cons:["Vibey at high RPM","Suspension too stiff for pillion","Limited wind protection","Average build quality"]
+  },
+  {
+    id:3, brand:"Royal Enfield", name:"Interceptor 650", category:"cruiser", cc:648, power:"47 bhp", topSpeed:"161 km/h",
+    mileage:"22 kmpl", tank:"13.7L", price:310000,
+    badge:null, year:2024, isNew:false, isFeatured:true, isTopRated:true,
+    img:"bikes/interceptor650.jpg",
+    officialUrl:"https://www.royalenfield.com/in/en/motorcycles/interceptor-650/",
+    desc:"A neo-retro classic that delivers genuine parallel-twin soul at an unbeatable price.",
+    specs:{engine:"648cc Parallel-Twin",power:"47 bhp @ 7,150 rpm",torque:"52 Nm @ 5,250 rpm",gearbox:"6-speed",weight:"202 kg",seat:"804 mm",fuel:"Petrol",abs:"Dual-channel ABS"},
+    pros:["Accessible parallel twin","Comfortable ergonomics","Rich customisation ecosystem","Best touring value"],
+    cons:["No riding modes","Basic instrument cluster","Heavy for beginners","Plain electronics package"]
+  },
+  {
+    id:4, brand:"Honda", name:"CBR1000RR-R Fireblade SP", category:"sports", cc:999, power:"214 bhp", topSpeed:"299 km/h",
+    mileage:"12 kmpl", tank:"16.1L", price:2400000,
+    badge:"featured", year:2024, isNew:false, isFeatured:true, isTopRated:false,
+    img:"bikes/fireblade.jpg",
+    officialUrl:"https://www.honda2wheelersindia.com",
+    desc:"Honda's HRC-developed Superbike — the Fireblade that bridges race and road.",
+    specs:{engine:"999.9cc Inline-4",power:"214 bhp @ 14,500 rpm",torque:"113 Nm @ 12,500 rpm",gearbox:"6-speed",weight:"201 kg",seat:"830 mm",fuel:"Petrol",abs:"Cornering ABS"},
+    pros:["World Superbike homologation","Winglets for downforce","Öhlins Smart EC 2.0","Immense top-end power"],
+    cons:["Brutal track ergonomics","Preminum price tag","Not beginner-friendly","Heavy for a Superbike"]
+  },
+  {
+    id:5, brand:"Suzuki", name:"GSX-R1000R", category:"sports", cc:999, power:"199 bhp", topSpeed:"299 km/h",
+    mileage:"13 kmpl", tank:"17L", price:1900000,
+    badge:null, year:2023, isNew:false, isFeatured:false, isTopRated:true,
+    img:"bikes/gsxr1000r.jpg",
+    officialUrl:"https://www.suzukimotorcycle.co.in",
+    desc:"The GSX-R legacy continues — a litre-bike that balances race-bred power with road manners.",
+    specs:{engine:"999.8cc Inline-4",power:"199 bhp @ 13,200 rpm",torque:"117.6 Nm @ 10,800 rpm",gearbox:"6-speed",weight:"203 kg",seat:"825 mm",fuel:"Petrol",abs:"Cornering ABS"},
+    pros:["SDMS-Alpha traction control","Showa suspension","Balanced power delivery","Strong brand heritage"],
+    cons:["Dated electronics vs rivals","Heavier than competition","Fuel injection lag","Limited colour options"]
+  },
+  {
+    id:6, brand:"Kawasaki", name:"Ninja ZX-10R", category:"sports", cc:998, power:"203 bhp", topSpeed:"299 km/h",
+    mileage:"13 kmpl", tank:"17L", price:1530000,
+    badge:"top", year:2024, isNew:false, isFeatured:true, isTopRated:true,
+    img:"bikes/zx10r.jpg",
+    officialUrl:"https://www.kawasaki.co.in/motorcycles/ninja/zx-10r",
+    desc:"Kawasaki's World Superbike weapon — a decade of WSBK titles translated to the road.",
+    specs:{engine:"998cc Inline-4",power:"203 bhp @ 13,500 rpm",torque:"114.9 Nm @ 11,400 rpm",gearbox:"6-speed",weight:"207 kg",seat:"835 mm",fuel:"Petrol",abs:"Cornering ABS + IMU"},
+    pros:["WSBK championship pedigree","Showa Balance Free suspension","Launch control","Advanced IMU"],
+    cons:["Hard seats for long rides","Requires warm up","Premium pricing","Aggressive riding position"]
+  },
+  {
+    id:7, brand:"BMW", name:"S 1000 RR", category:"sports", cc:999, power:"210 bhp", topSpeed:"305 km/h",
+    mileage:"14 kmpl", tank:"16.5L", price:2195000,
+    badge:"featured", year:2024, isNew:true, isFeatured:true, isTopRated:true,
+    img:"bikes/s1000rr.jpg",
+    officialUrl:"https://www.bmw-motorrad.in/en/models/sport/s1000rr.html",
+    desc:"The asymmetric face of German precision — BMW's flagship Superbike with M Package.",
+    specs:{engine:"999cc Inline-4 ShiftCam",power:"210 bhp @ 13,750 rpm",torque:"113 Nm @ 11,000 rpm",gearbox:"6-speed",weight:"197 kg",seat:"824 mm",fuel:"Petrol",abs:"Race ABS + DTC"},
+    pros:["ShiftCam variable timing","M Endurance chain","Winglets for aerodynamic stability","5 riding modes"],
+    cons:["Very expensive","Complex electronics learning curve","Requires dealer service","M Package adds cost"]
+  },
+  {
+    id:8, brand:"Ducati", name:"Panigale V4 S", category:"sports", cc:1103, power:"214 bhp", topSpeed:"305 km/h",
+    mileage:"12 kmpl", tank:"16L", price:2895000,
+    badge:"featured", year:2024, isNew:true, isFeatured:true, isTopRated:true,
+    img:"bikes/panigalev4s.jpg",
+    officialUrl:"https://www.ducati.com/in/en/motorcycles/panigale/panigale-v4-s",
+    desc:"Italian passion in its most explosive form — Desmosedici Stradale V4 in full flight.",
+    specs:{engine:"1103cc Desmosedici Stradale V4",power:"214 bhp @ 13,000 rpm",torque:"124 Nm @ 10,000 rpm",gearbox:"6-speed",weight:"195 kg",seat:"830 mm",fuel:"Petrol",abs:"Cornering ABS + EVO2"},
+    pros:["Desmodromic valve timing","Öhlins NPX forks","Most powerful production V4","Race-derived chassis"],
+    cons:["Very high maintenance cost","Intimidating for beginners","Short service intervals","Hot engine in traffic"]
+  },
+  {
+    id:9, brand:"Triumph", name:"Street Triple RS", category:"naked", cc:765, power:"123 bhp", topSpeed:"250 km/h",
+    mileage:"18 kmpl", tank:"17.4L", price:1160000,
+    badge:null, year:2024, isNew:false, isFeatured:false, isTopRated:true,
+    img:"bikes/streettriplers.jpg",
+    officialUrl:"https://www.triumphmotorcycles.in/motorcycles/street/street-triple/street-triple-rs",
+    desc:"Britain's most exciting street triple — light, balanced, and devastatingly quick.",
+    specs:{engine:"765cc Inline-3",power:"123 bhp @ 11,750 rpm",torque:"79 Nm @ 9,350 rpm",gearbox:"6-speed",weight:"166 kg",seat:"825 mm",fuel:"Petrol",abs:"Cornering ABS + IMU"},
+    pros:["Iconic triple exhaust note","Nimble chassis","Adjustable Öhlins rear","Best in class power-to-weight"],
+    cons:["Aggressive riding position","Expensive for a naked","Requires frequent oil changes","Limited wind protection"]
+  },
+  {
+    id:10, brand:"Aprilia", name:"RS 660", category:"sports", cc:659, power:"100 bhp", topSpeed:"240 km/h",
+    mileage:"20 kmpl", tank:"15L", price:1325000,
+    badge:"new", year:2024, isNew:true, isFeatured:false, isTopRated:false,
+    img:"bikes/rs660.jpg",
+    officialUrl:"https://www.apriliaindia.com",
+    desc:"Aprilia's return to middleweight sports — a lightweight package with superbike DNA.",
+    specs:{engine:"659cc Parallel-Twin",power:"100 bhp @ 10,500 rpm",torque:"67 Nm @ 8,500 rpm",gearbox:"6-speed",weight:"169 kg",seat:"820 mm",fuel:"Petrol",abs:"Cornering ABS + IMU"},
+    pros:["Light and nimble handling","APRC electronics suite","V4-derived engineering","Fun everyday usability"],
+    cons:["Limited dealer network","High spare parts cost","Seat gets warm quickly","Parallel twin vs V4 feel"]
+  },
+  {
+    id:11, brand:"Yamaha", name:"MT-09 SP", category:"naked", cc:888, power:"119 bhp", topSpeed:"240 km/h",
+    mileage:"18 kmpl", tank:"14L", price:1050000,
+    badge:null, year:2024, isNew:false, isFeatured:false, isTopRated:true,
+    img:"bikes/mt09sp.jpg",
+    officialUrl:"https://www.yamaha-motor.co.in",
+    desc:"The Dark Side of Japan — Yamaha's hyper-naked with a crossplane triple that howls.",
+    specs:{engine:"888cc Inline-3 CP3",power:"119 bhp @ 10,000 rpm",torque:"93 Nm @ 7,000 rpm",gearbox:"6-speed",weight:"193 kg",seat:"825 mm",fuel:"Petrol",abs:"Cornering ABS"},
+    pros:["Crossplane triple sound","QSS quickshifter","6-axis IMU","Aggressive yet manageable power"],
+    cons:["Stock suspension too soft","Fueling can be abrupt","Wide handlebars","Wind noise above 150 km/h"]
+  },
+  {
+    id:12, brand:"KTM", name:"Adventure 890 R", category:"adventure", cc:889, power:"105 bhp", topSpeed:"210 km/h",
+    mileage:"20 kmpl", tank:"20L", price:1300000,
+    badge:"new", year:2024, isNew:true, isFeatured:true, isTopRated:false,
+    img:"bikes/adventure890r.jpg",
+    officialUrl:"https://www.ktmindia.com",
+    desc:"Built for adventure without compromise — from Himalayan passes to Sahara dunes.",
+    specs:{engine:"889cc Parallel-Twin",power:"105 bhp @ 8,000 rpm",torque:"100 Nm @ 6,500 rpm",gearbox:"6-speed",weight:"189 kg",seat:"880 mm",fuel:"Petrol",abs:"Offroad ABS + Traction Control"},
+    pros:["WP XPLOR suspension","Offroad ABS","Long travel suspension","20L tank for range"],
+    cons:["Tall seat height","Heavy off-road in deep mud","Premium price for ADV","Complex to service"]
+  },
+  {
+    id:13, brand:"Honda", name:"Africa Twin CRF1100L", category:"adventure", cc:1084, power:"101 bhp", topSpeed:"220 km/h",
+    mileage:"20 kmpl", tank:"24.2L", price:1610000,
+    badge:null, year:2024, isNew:false, isFeatured:false, isTopRated:false,
+    img:"bikes/africatwin.jpg",
+    officialUrl:"https://www.honda2wheelersindia.com",
+    desc:"The legendary Dakar heritage reborn for modern adventurers — unstoppable on any terrain.",
+    specs:{engine:"1084cc Parallel-Twin",power:"101 bhp @ 7,500 rpm",torque:"105 Nm @ 6,250 rpm",gearbox:"6-speed + DCT",weight:"226 kg",seat:"850 mm",fuel:"Petrol",abs:"Cornering ABS"},
+    pros:["Optional DCT gearbox","24.2L tank","Robust off-road capability","Honda reliability"],
+    cons:["Heavy for technical off-road","Tall ride height","Basic TFT display","Pricey DCT variant"]
+  },
+  {
+    id:14, brand:"Royal Enfield", name:"Himalayan 450", category:"adventure", cc:452, power:"40 bhp", topSpeed:"160 km/h",
+    mileage:"30 kmpl", tank:"17L", price:285000,
+    badge:"new", year:2024, isNew:true, isFeatured:false, isTopRated:true,
+    img:"bikes/himalayan450.jpg",
+    officialUrl:"https://www.royalenfield.com/in/en/motorcycles/himalayan/",
+    desc:"The Himalayan reborn with a new heart — India's most capable affordable adventure bike.",
+    specs:{engine:"452cc Single",power:"40 bhp @ 8,000 rpm",torque:"40 Nm @ 5,500 rpm",gearbox:"6-speed",weight:"196 kg",seat:"825 mm",fuel:"Petrol",abs:"Switchable ABS"},
+    pros:["Gorilla Glass TFT display","Tripper navigation","Affordable adventure package","Updated chassis"],
+    cons:["Single cylinder vibration","Basic suspension","Limited top-end power","Boot quality concerns"]
+  },
+  {
+    id:15, brand:"Kawasaki", name:"Versys 1000 SE", category:"touring", cc:1043, power:"120 bhp", topSpeed:"230 km/h",
+    mileage:"19 kmpl", tank:"21L", price:1090000,
+    badge:null, year:2023, isNew:false, isFeatured:false, isTopRated:false,
+    img:"bikes/versys1000se.jpg",
+    officialUrl:"https://www.kawasaki.co.in",
+    desc:"The ultimate grand tourer — designed to eat continents for breakfast.",
+    specs:{engine:"1043cc Inline-4",power:"120 bhp @ 9,000 rpm",torque:"102 Nm @ 7,500 rpm",gearbox:"6-speed",weight:"256 kg",seat:"840 mm",fuel:"Petrol",abs:"KIBS ABS"},
+    pros:["Electronically adjustable suspension","Heated grips","Large windscreen","Luggage system ready"],
+    cons:["Very heavy","Not off-road capable","Pricey for its class","Large turning radius"]
+  },
+  {
+    id:16, brand:"BMW", name:"GS 1250 Adventure", category:"adventure", cc:1254, power:"136 bhp", topSpeed:"220 km/h",
+    mileage:"18 kmpl", tank:"30L", price:2300000,
+    badge:"featured", year:2024, isNew:false, isFeatured:true, isTopRated:true,
+    img:"bikes/gs1250adventur.jpg",
+    officialUrl:"https://www.bmw-motorrad.in",
+    desc:"The undisputed king of adventure touring — a 30-litre tank and the entire world ahead.",
+    specs:{engine:"1254cc Boxer Twin ShiftCam",power:"136 bhp @ 7,750 rpm",torque:"143 Nm @ 6,250 rpm",gearbox:"6-speed",weight:"268 kg",seat:"850/870 mm",fuel:"Petrol",abs:"Pro ABS + DTC"},
+    pros:["30L tank for huge range","Dynamic ESA","Enduro Pro modes","GS Trophy heritage"],
+    cons:["Very expensive","Extremely heavy","Complex electronics","Specialist service required"]
+  },
+  {
+    id:17, brand:"Ducati", name:"Monster SP", category:"naked", cc:937, power:"111 bhp", topSpeed:"245 km/h",
+    mileage:"16 kmpl", tank:"14.5L", price:1495000,
+    badge:"new", year:2024, isNew:true, isFeatured:false, isTopRated:false,
+    img:"bikes/monstersp.jpg",
+    officialUrl:"https://www.ducati.com/in/en/motorcycles/monster/monster-sp",
+    desc:"The Monster's SP treatment — Öhlins suspension and full Ducati DNA in a daily-rider format.",
+    specs:{engine:"937cc Testastretta V-Twin",power:"111 bhp @ 9,250 rpm",torque:"93 Nm @ 6,500 rpm",gearbox:"6-speed",weight:"188 kg",seat:"820 mm",fuel:"Petrol",abs:"Cornering ABS EVO"},
+    pros:["Öhlins fully adjustable suspension","Lightest Monster ever","DWC + DTC electronics","Agile handling"],
+    cons:["Expensive for a naked","Short service intervals","Limited fuel range","Hard to manage in traffic"]
+  },
+  {
+    id:18, brand:"Triumph", name:"Bonneville T120", category:"cruiser", cc:1200, power:"80 bhp", topSpeed:"195 km/h",
+    mileage:"22 kmpl", tank:"14.5L", price:1090000,
+    badge:null, year:2024, isNew:false, isFeatured:false, isTopRated:false,
+    img:"bikes/bonnevillet120.jpg",
+    officialUrl:"https://www.triumphmotorcycles.in",
+    desc:"Steve McQueen's legacy in modern form — the T120 is the definitive British classic.",
+    specs:{engine:"1200cc Parallel-Twin HT",power:"80 bhp @ 6,550 rpm",torque:"105 Nm @ 3,500 rpm",gearbox:"6-speed",weight:"228 kg",seat:"790 mm",fuel:"Petrol",abs:"Dual-channel ABS"},
+    pros:["Thunderous low-end torque","Classic British styling","Low seat height","Smooth power delivery"],
+    cons:["Heavy for its power output","Premium price","Basic electronics package","Not sporty at all"]
+  },
+  {
+    id:19, brand:"Suzuki", name:"V-Strom 650 XT", category:"adventure", cc:645, power:"71 bhp", topSpeed:"200 km/h",
+    mileage:"26 kmpl", tank:"20L", price:895000,
+    badge:null, year:2023, isNew:false, isFeatured:false, isTopRated:false,
+    img:"bikes/vstrom650xt.jpg",
+    officialUrl:"https://www.suzukimotorcycle.co.in",
+    desc:"The accessible adventure bike that goes anywhere without breaking the bank.",
+    specs:{engine:"645cc V-Twin",power:"71 bhp @ 8,800 rpm",torque:"62 Nm @ 6,500 rpm",gearbox:"6-speed",weight:"216 kg",seat:"835 mm",fuel:"Petrol",abs:"ABS + Traction Control"},
+    pros:["Accessible engine character","Wire-spoked wheels","Comfortable long-distance seat","Reliable V-Twin"],
+    cons:["Less power vs competitors","Dated electronics","Basic instrument cluster","No cornering ABS"]
+  },
+  {
+    id:20, brand:"Aprilia", name:"Tuono V4 1100", category:"naked", cc:1077, power:"175 bhp", topSpeed:"278 km/h",
+    mileage:"14 kmpl", tank:"18.5L", price:2050000,
+    badge:"featured", year:2024, isNew:true, isFeatured:true, isTopRated:true,
+    img:"bikes/tuonov4.jpg",
+    officialUrl:"https://www.apriliaindia.com",
+    desc:"The world's most powerful production naked bike — a V4 Superbike without its clothes.",
+    specs:{engine:"1077cc V4 90°",power:"175 bhp @ 11,000 rpm",torque:"121 Nm @ 9,000 rpm",gearbox:"6-speed",weight:"198 kg",seat:"825 mm",fuel:"Petrol",abs:"Cornering ABS + ACSII"},
+    pros:["RSV4-derived V4 engine","APRC electronics suite","Öhlins NIX30 suspension","Most powerful naked"],
+    cons:["Very expensive","Very aggressive","Limited dealer network","Demanding maintenance schedule"]
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let wishlist = JSON.parse(localStorage.getItem('motoverse_wishlist') || '[]');
+let compareList = [];
+let currentFiltered = [...BIKES];
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+function init() {
+  populateBrandFilter();
+  renderFeatured();
+  renderBrands();
+  renderLatest();
+  renderAll(BIKES);
+  buildMarquee();
+  updateWishlistCount();
+  setupScrollNav();
+}
+
+function buildMarquee() {
+  const items = BIKES.map(b => `<span class="marquee-item">${b.brand} ${b.name}</span>`).join('');
+  const t = document.getElementById('marquee-track');
+  t.innerHTML = items + items;
+}
+
+function populateBrandFilter() {
+  const brands = [...new Set(BIKES.map(b => b.brand))].sort();
+  const sel = document.getElementById('filter-brand');
+  brands.forEach(b => {
+    const o = document.createElement('option');
+    o.value = b; o.textContent = b;
+    sel.appendChild(o);
+  });
+}
+
+function setupScrollNav() {
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER BIKE CARD
+// ═══════════════════════════════════════════════
+function bikeCard(bike, showCompare = true) {
+  const inWishlist = wishlist.includes(bike.id);
+  const inCompare = compareList.includes(bike.id);
+  const badgeHTML = bike.badge
+    ? `<span class="bike-card-badge badge-${bike.badge}">${bike.badge === 'new' ? '🆕 New' : bike.badge === 'featured' ? '⭐ Featured' : '🏆 Top Rated'}</span>`
+    : '';
+
+  return `
+    <div class="bike-card" id="card-${bike.id}">
+      <div class="bike-card-img">
+        <img src="${bike.img}" alt="${bike.brand} ${bike.name}" loading="lazy">
+        ${badgeHTML}
+        <button class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="toggleWishlist(${bike.id})" title="Add to wishlist">
+          ${inWishlist ? '♥' : '♡'}
+        </button>
+      </div>
+      <div class="bike-card-body">
+        <div class="bike-brand">${bike.brand}</div>
+        <div class="bike-name">${bike.name}</div>
+        <div class="bike-category">${bike.category} · ${bike.year}</div>
+        <div class="bike-specs">
+          <div class="spec-item">
+            <div class="spec-label">Engine</div>
+            <div class="spec-value">${bike.cc}cc</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Power</div>
+            <div class="spec-value">${bike.power}</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Top Speed</div>
+            <div class="spec-value">${bike.topSpeed}</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Tank</div>
+            <div class="spec-value">${bike.tank}</div>
+          </div>
+        </div>
+        <div class="bike-price">₹${(bike.price/100000).toFixed(2)}L <span>ex-showroom</span></div>
+        <div class="bike-actions">
+          <button class="bike-btn bike-btn-primary" onclick="openModal(${bike.id})">View Details</button>
+          <a href="${bike.officialUrl}" target="_blank" rel="noopener" class="bike-btn bike-btn-outline" style="text-decoration:none">Official ↗</a>
+        </div>
+        ${showCompare ? `
+        <label class="compare-checkbox">
+          <input type="checkbox" ${inCompare ? 'checked' : ''} onchange="toggleCompare(${bike.id}, this.checked)">
+          Compare
+        </label>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderFeatured() {
+  const featured = BIKES.filter(b => b.isFeatured).slice(0, 3);
+  document.getElementById('featured-grid').innerHTML = featured.map(b => bikeCard(b)).join('');
+}
+
+function renderLatest() {
+  const latest = BIKES.filter(b => b.isNew).slice(0, 3);
+  document.getElementById('latest-grid').innerHTML = latest.map(b => bikeCard(b)).join('');
+}
+
+function renderAll(bikes) {
+  const grid = document.getElementById('all-grid');
+  document.getElementById('results-count').innerHTML = `Showing <strong>${bikes.length}</strong> motorcycles`;
+  if (bikes.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><span>🏍</span><p>No bikes match your filters.</p><button class="btn btn-ghost" onclick="clearFilters()">Clear Filters</button></div>`;
+    return;
+  }
+  grid.innerHTML = bikes.map(b => bikeCard(b)).join('');
+}
+
+function renderBrands() {
+  const brandData = {};
+  BIKES.forEach(b => { brandData[b.brand] = (brandData[b.brand] || 0) + 1; });
+  const colors = {Yamaha:'#003087',KTM:'#ff6600',Honda:'#e40521','Royal Enfield':'#8B4513',Suzuki:'#0066cc',Kawasaki:'#00a650',BMW:'#1c69d4',Ducati:'#cc0000',Triumph:'#003087',Aprilia:'#003082'};
+  const grid = document.getElementById('brands-grid');
+  grid.innerHTML = Object.entries(brandData).map(([brand, count]) => `
+    <div class="brand-card" onclick="filterByBrand('${brand}')">
+      <div class="brand-icon" style="background:${colors[brand]||'#333'}20;color:${colors[brand]||'#aaa'}">${brand.slice(0,2)}</div>
+      <div class="brand-name">${brand}</div>
+      <div class="brand-count">${count} bike${count>1?'s':''}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+//  FILTERS
+// ═══════════════════════════════════════════════
+function applyFilters() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const brand = document.getElementById('filter-brand').value;
+  const cat = document.getElementById('filter-cat').value;
+  const price = document.getElementById('filter-price').value;
+  const cc = document.getElementById('filter-cc').value;
+  const sort = document.getElementById('sort-select').value;
+
+  let bikes = BIKES.filter(b => {
+    if (q && !`${b.brand} ${b.name} ${b.category}`.toLowerCase().includes(q)) return false;
+    if (brand && b.brand !== brand) return false;
+    if (cat && b.category !== cat) return false;
+    if (price) {
+      const [mn, mx] = price.split('-').map(Number);
+      if (b.price < mn || b.price > mx) return false;
+    }
+    if (cc) {
+      const [mn, mx] = cc.split('-').map(Number);
+      if (b.cc < mn || b.cc > mx) return false;
+    }
+    return true;
+  });
+
+  if (sort === 'price-asc') bikes.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') bikes.sort((a,b) => b.price - a.price);
+  else if (sort === 'cc-desc') bikes.sort((a,b) => b.cc - a.cc);
+  else if (sort === 'speed-desc') bikes.sort((a,b) => parseInt(b.topSpeed) - parseInt(a.topSpeed));
+
+  currentFiltered = bikes;
+  renderAll(bikes);
+  document.getElementById('collections').scrollIntoView({behavior:'smooth'});
+}
+
+function clearFilters() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('filter-brand').value = '';
+  document.getElementById('filter-cat').value = '';
+  document.getElementById('filter-price').value = '';
+  document.getElementById('filter-cc').value = '';
+  document.getElementById('sort-select').value = 'default';
+  renderAll(BIKES);
+}
+
+function filterByBrand(brand) {
+  document.getElementById('filter-brand').value = brand;
+  applyFilters();
+}
+
+function filterByCategory(cat) {
+  document.getElementById('filter-cat').value = cat;
+  applyFilters();
+}
+
+// ═══════════════════════════════════════════════
+//  WISHLIST
+// ═══════════════════════════════════════════════
+function toggleWishlist(id) {
+  const idx = wishlist.indexOf(id);
+  const bike = BIKES.find(b => b.id === id);
+  if (idx === -1) {
+    wishlist.push(id);
+    showToast(`${bike.name} added to wishlist ♥`, 'success');
+  } else {
+    wishlist.splice(idx, 1);
+    showToast(`${bike.name} removed from wishlist`, 'info');
+  }
+  localStorage.setItem('motoverse_wishlist', JSON.stringify(wishlist));
+  updateWishlistCount();
+  // Update button in all cards
+  document.querySelectorAll(`#card-${id} .wishlist-btn`).forEach(btn => {
+    btn.classList.toggle('active', wishlist.includes(id));
+    btn.textContent = wishlist.includes(id) ? '♥' : '♡';
+  });
+}
+
+function updateWishlistCount() {
+  const el = document.getElementById('wishlist-count');
+  el.textContent = wishlist.length > 0 ? `(${wishlist.length})` : '';
+}
+
+function openWishlist() {
+  if (wishlist.length === 0) { showToast('Your wishlist is empty. Add bikes using ♡', 'info'); return; }
+  const bikes = BIKES.filter(b => wishlist.includes(b.id));
+  const html = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-brand">Your Collection</div>
+      <div class="modal-title">Wishlist</div>
+    </div>
+    <div class="modal-body">
+      <div class="bikes-grid" style="padding:0">
+        ${bikes.map(b => bikeCard(b, false)).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════
+//  COMPARE
+// ═══════════════════════════════════════════════
+function toggleCompare(id, checked) {
+  if (checked) {
+    if (compareList.length >= 4) {
+      showToast('You can compare up to 4 bikes at once.', 'warning');
+      const card = document.querySelector(`#card-${id} input[type=checkbox]`);
+      if (card) card.checked = false;
+      return;
+    }
+    if (!compareList.includes(id)) compareList.push(id);
+  } else {
+    compareList = compareList.filter(x => x !== id);
+  }
+  updateCompareBar();
+  renderCompareTable();
+}
+
+function updateCompareBar() {
+  const bar = document.getElementById('compare-bar');
+  const slots = document.getElementById('compare-slots');
+  const label = document.getElementById('compare-count-label');
+
+  if (compareList.length === 0) { bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  label.textContent = `${compareList.length} selected`;
+
+  slots.innerHTML = compareList.map(id => {
+    const bike = BIKES.find(b => b.id === id);
+    return `<div class="compare-slot filled">
+      <div class="compare-slot-name">${bike.brand} ${bike.name}</div>
+      <button class="compare-slot-remove" onclick="toggleCompare(${id}, false); document.querySelector('#card-${id} input').checked=false">✕</button>
+    </div>`;
+  }).join('') + (compareList.length < 4 ? `<div class="compare-slot">+ Add Bike</div>` : '');
+}
+
+function clearCompare() {
+  compareList = [];
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+  updateCompareBar();
+  renderCompareTable();
+}
+
+function scrollToCompare() {
+  renderCompareTable();
+  document.getElementById('compare-section').scrollIntoView({behavior:'smooth'});
+}
+
+function renderCompareTable() {
+  const view = document.getElementById('compare-view');
+  const empty = document.getElementById('compare-empty');
+  const table = document.getElementById('compare-table');
+
+  if (compareList.length < 2) {
+    view.classList.remove('open');
+    empty.style.display = 'block';
+    return;
+  }
+  view.classList.add('open');
+  empty.style.display = 'none';
+
+  const bikes = compareList.map(id => BIKES.find(b => b.id === id));
+  const rows = [
+    ['Brand', bikes.map(b => b.brand)],
+    ['Category', bikes.map(b => b.category)],
+    ['Engine', bikes.map(b => b.cc + 'cc')],
+    ['Power', bikes.map(b => b.power)],
+    ['Top Speed', bikes.map(b => b.topSpeed)],
+    ['Mileage', bikes.map(b => b.mileage)],
+    ['Tank', bikes.map(b => b.tank)],
+    ['Price', bikes.map(b => `₹${(b.price/100000).toFixed(2)}L`)],
+    ['Year', bikes.map(b => b.year)],
+  ];
+
+  const getWinner = (vals, mode='max') => {
+    const nums = vals.map(v => parseFloat(v.replace(/[^0-9.]/g, '')));
+    const target = mode === 'max' ? Math.max(...nums) : Math.min(...nums);
+    return nums.map(n => n === target);
+  };
+  const winnerRows = {
+    'Engine': getWinner(bikes.map(b => b.cc + '')),
+    'Power': getWinner(bikes.map(b => b.power)),
+    'Top Speed': getWinner(bikes.map(b => b.topSpeed)),
+    'Mileage': getWinner(bikes.map(b => b.mileage)),
+    'Tank': getWinner(bikes.map(b => b.tank)),
+    'Price': getWinner(bikes.map(b => b.price + ''), 'min'),
+  };
+
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Specification</th>
+        ${bikes.map(b => `
+          <th class="bike-col-head">
+            <img src="${b.img}" alt="${b.name}">
+            <div style="font-size:0.75rem;font-weight:800;color:var(--text)">${b.brand} ${b.name}</div>
+          </th>
+        `).join('')}
+      </tr>
+    </thead>
+    <tbody>
+      ${rows.map(([label, vals]) => `
+        <tr>
+          <td>${label}</td>
+          ${vals.map((v, i) => `
+            <td class="${winnerRows[label] && winnerRows[label][i] ? 'val-win' : ''}" style="text-align:center">
+              ${v} ${winnerRows[label] && winnerRows[label][i] ? '✓' : ''}
+            </td>
+          `).join('')}
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════════
+function openModal(id) {
+  const bike = BIKES.find(b => b.id === id);
+  const html = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <img src="${bike.img}" alt="${bike.name}" class="modal-img">
+      <div class="modal-brand">${bike.brand}</div>
+      <div class="modal-title">${bike.name}</div>
+      <div class="modal-cat">${bike.category} · ${bike.year}</div>
+      <div class="modal-price">₹${(bike.price/100000).toFixed(2)} Lakh</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="switchTab(this,'overview')">Overview</button>
+        <button class="modal-tab" onclick="switchTab(this,'specs')">Full Specs</button>
+        <button class="modal-tab" onclick="switchTab(this,'proscons')">Pros & Cons</button>
+      </div>
+      
+      <div class="tab-content active" id="tab-overview">
+        <p style="color:var(--text2);line-height:1.8;font-size:0.95rem;margin-bottom:24px">${bike.desc}</p>
+        <div class="specs-full-grid">
+          <div class="spec-full-item"><div class="spec-full-label">Engine</div><div class="spec-full-value">${bike.cc}cc</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Max Power</div><div class="spec-full-value">${bike.power}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Top Speed</div><div class="spec-full-value">${bike.topSpeed}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Mileage</div><div class="spec-full-value">${bike.mileage}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Fuel Tank</div><div class="spec-full-value">${bike.tank}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Category</div><div class="spec-full-value">${bike.category}</div></div>
+        </div>
+        <div class="modal-footer">
+          <a href="${bike.officialUrl}" target="_blank" rel="noopener" class="btn btn-primary">Visit Official Site ↗</a>
+          <button class="btn btn-ghost" onclick="toggleWishlist(${bike.id})">${wishlist.includes(bike.id) ? '♥ Remove from Wishlist' : '♡ Add to Wishlist'}</button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-specs">
+        <div class="specs-full-grid">
+          ${Object.entries(bike.specs).map(([k,v]) => `
+            <div class="spec-full-item">
+              <div class="spec-full-label">${k}</div>
+              <div class="spec-full-value">${v}</div>
+            </div>
+          `).join('')}
+          <div class="spec-full-item"><div class="spec-full-label">Mileage</div><div class="spec-full-value">${bike.mileage}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Tank Capacity</div><div class="spec-full-value">${bike.tank}</div></div>
+          <div class="spec-full-item"><div class="spec-full-label">Top Speed</div><div class="spec-full-value">${bike.topSpeed}</div></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-proscons">
+        <div class="pros-cons">
+          <div class="pros-cons-box">
+            <div class="pros-cons-title pro">✅ Pros</div>
+            <ul class="pros-cons-list">
+              ${bike.pros.map(p => `<li><span style="color:var(--green)">●</span> ${p}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="pros-cons-box">
+            <div class="pros-cons-title con">⚠️ Cons</div>
+            <ul class="pros-cons-list">
+              ${bike.cons.map(c => `<li><span style="color:var(--red)">●</span> ${c}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchTab(btn, tab) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('motoverse_theme', isDark ? 'light' : 'dark');
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('motoverse_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-btn').textContent = saved === 'dark' ? '🌙' : '☀️';
+}
+
+// ═══════════════════════════════════════════════
+//  MOBILE MENU
+// ═══════════════════════════════════════════════
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg, type = 'info') {
+  const icons = {success:'✅', info:'ℹ️', warning:'⚠️'};
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<span>${icons[type]}</span>${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(20px)'; toast.style.transition = '0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
+}
+
+// ═══════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal({target: document.getElementById('modal-overlay')});
+});
+
+// ═══════════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════════
+loadTheme();
+init();
+</script>
+</body>
+</html>
+HTMLEOF
+echo "Done. Size: $(wc -c < /mnt/user-data/outputs/bike-collection.html) bytes"
